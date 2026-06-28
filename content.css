@@ -1,0 +1,142 @@
+/*
+ * YouTube Preview Speed – content.css
+ *
+ * All selectors namespaced with .yps-* — nothing touches YouTube's own classes.
+ *
+ * The badge intentionally matches YouTube's own preview-overlay button style:
+ * semi-transparent dark background, Roboto, white text.  It should look like
+ * a control YouTube forgot to ship.
+ */
+
+/* ── Wrapper ─────────────────────────────────────────────────────────────────
+ *
+ * Appended directly to #inline-preview-player and pinned to its top-left
+ * corner.  position:absolute works because the player element is already
+ * positioned.  pointer-events:auto is set here so our subtree receives clicks
+ * regardless of any pointer-events:none on ancestor overlay elements.
+ */
+.yps-wrapper {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: auto;
+}
+
+/* ── Badge ───────────────────────────────────────────────────────────────────
+ *
+ * Mirrors the size, shape, and colour of YouTube's Mute / CC buttons so the
+ * control reads as part of the existing overlay, not a third-party addition.
+ */
+.yps-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 0 8px;
+
+  background: rgba(0, 0, 0, 0.54);
+  color: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 2px;
+
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  line-height: 1;
+
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+
+  transition: background 0.1s ease, color 0.1s ease;
+}
+
+.yps-badge:hover {
+  background: rgba(0, 0, 0, 0.72);
+  color: #ffffff;
+}
+
+/* ── Dropdown ────────────────────────────────────────────────────────────────
+ *
+ * position:absolute inside .yps-wrapper (which is position:absolute and
+ * therefore a positioning context).  top:100% places it flush below the badge.
+ * Being inside the wrapper means:
+ *   1. The mouse stays within #inline-preview-player → YouTube doesn't end the
+ *      preview when the user moves to select a speed.
+ *   2. All events bubble through the wrapper, whose blockers prevent them from
+ *      reaching YouTube's navigation/play handlers.
+ */
+.yps-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 10000;
+  pointer-events: auto;
+
+  background: #212121;
+  border-radius: 4px;
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.65),
+    0 2px 6px  rgba(0, 0, 0, 0.40);
+  overflow: hidden;
+  min-width: 80px;
+  padding: 4px 0;
+}
+
+/* ── Speed items ─────────────────────────────────────────────────────────────*/
+
+.yps-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 14px 8px 10px;
+
+  background: none;
+  color: rgba(255, 255, 255, 0.82);
+  border: none;
+
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.15px;
+  text-align: left;
+  white-space: nowrap;
+
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+
+  transition: background 0.08s ease, color 0.08s ease;
+}
+
+.yps-item:hover {
+  background: rgba(255, 255, 255, 0.10);
+  color: #ffffff;
+}
+
+.yps-item--active {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* ── Checkmark column ────────────────────────────────────────────────────────
+ *
+ * Fixed-width so the speed label stays left-aligned regardless of whether the
+ * checkmark is present.
+ */
+.yps-check {
+  display: inline-block;
+  width: 14px;
+  font-size: 11px;
+  flex-shrink: 0;
+  text-align: center;
+  color: #ffffff;
+}
