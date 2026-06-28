@@ -38,6 +38,6 @@ While YouTube allows previews to autoplay when hovering over thumbnails, it does
 
 🚧 Work Completed.
 
-This project is done but changing the speed should be done very fast once the dropdown in clicked.
+
 
 
